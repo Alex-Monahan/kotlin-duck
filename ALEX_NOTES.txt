@@ -1,0 +1,17 @@
+./gradlew build
+
+./gradlew run  
+
+To point to my custom version of the JDBC driver:
+    Edit build.gradle.kts
+        dependencies {
+            testImplementation(kotlin("test"))
+            // implementation("org.duckdb:duckdb_jdbc:0.8.1")
+            implementation(files("/Users/alex/Documents/DuckDB/duckdb_motherduck/build/release/tools/jdbc/duckdb_jdbc.jar"))
+            implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+        }
+
+        kotlin {
+            jvmToolchain(20) // Needed for buffer position method to exist
+        }
+    

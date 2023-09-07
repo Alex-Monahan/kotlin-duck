@@ -12,7 +12,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.duckdb:duckdb_jdbc:0.8.1")
+    // implementation("org.duckdb:duckdb_jdbc:0.8.1")
+    implementation(files("/Users/alex/Documents/DuckDB/duckdb_motherduck/build/release/tools/jdbc/duckdb_jdbc.jar"))
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
 }
 
@@ -21,7 +22,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(20) // Needed for buffer position method to exist
 }
 
 application {
