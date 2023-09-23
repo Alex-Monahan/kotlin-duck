@@ -1,19 +1,34 @@
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.sql.DriverManager
 import java.sql.Statement
 import java.util.*
 
+class SqlArraySerializer : StdSerializer<java.sql.Array>(java.sql.Array::class.java) {
+    override fun serialize(value: java.sql.Array, gen: JsonGenerator, provider: SerializerProvider) {
+        gen.writeObject(value.array)
+    }
+}
 
 fun main(args: Array<String>) {
 
+
     val ro_prop = Properties()
     ro_prop.setProperty("duckdb.read_only", "true")
-    val conn = DriverManager.getConnection("jdbc:duckdb:test.db", ro_prop)
+    //val conn = DriverManager.getConnection("jdbc:duckdb:test0.8.1.db", ro_prop)
+    val conn = DriverManager.getConnection("jdbc:duckdb:test0.9.0.db", ro_prop)
 
     val stmt: Statement = conn.createStatement()
 
 
-    val mapper = jacksonObjectMapper()
+    val mapper = jacksonObjectMapper();
+    val module = SimpleModule();
+    module.addSerializer(SqlArraySerializer());
+    mapper.registerModule(module);
+
     var results = mutableListOf<Any>()
     var json: String?
 
